@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evolve: El Futuro de las Blockchains Modulares</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <style>
+        /* Estilos personalizados para el tema azul oscuro */
+        :root {
+            --bg-deep-blue: #0A192F; /* Un azul muy oscuro similar a muchos temas de código */
+            --text-light: #f1f5f9; /* slate-100 */
+            --accent-color: #6366f1; /* indigo-500 */
+            --highlight-color: #38bdf8; /* sky-400 */
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0d1117; /* Fondo general aún más oscuro */
+        }
+        .slide-container {
+            background-color: var(--bg-deep-blue);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            color: var(--text-light);
+            padding: 2rem;
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+            opacity: 0;
+            transform: scale(0.95);
+        }
+        .slide-container.active {
+            opacity: 1;
+            transform: scale(1);
+        }
+        .slide-content {
+            max-width: 1000px;
+            width: 100%;
+        }
+        .code-block {
+            background-color: #161b22;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+            border-left: 4px solid var(--accent-color);
+        }
+        .accent-text {
+            color: var(--accent-color);
+            font-weight: 600;
+        }
+        .highlight-text {
+            color: var(--highlight-color);
+            font-weight: 700;
+        }
+
+        /* Responsive adjustments for the control panel */
+        .controls {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: rgba(10, 25, 47, 0.95); /* Semi-transparente */
+            padding: 0.75rem 1.5rem;
+            z-index: 10;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+        }
+
+        @media (max-width: 640px) {
+            .controls {
+                padding: 0.5rem 1rem;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .controls button, .controls > div {
+                margin: 0.25rem;
+            }
+            .slide-content {
+                padding-bottom: 7rem; /* Espacio para controles */
+            }
+        }
+        
+        /* Estilos para el contenedor de salida de Gemini */
+        #gemini-output {
+            position: fixed;
+            bottom: 4.5rem; /* Ajuste para estar justo encima del panel de control */
+            left: 0;
+            right: 0;
+            padding: 1rem;
+            background-color: #161b22;
+            border-top: 2px solid var(--highlight-color);
+            z-index: 9;
+            color: var(--text-light);
+            box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.3);
+            display: none; /* Oculto por defecto */
+            border-radius: 8px 8px 0 0;
+        }
+
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-top: 4px solid var(--highlight-color);
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Contenedor principal de la presentación -->
+    <div id="presentation-slides">
+        
+        <!-- Diapositiva 1: Introducción y Contexto (Inspiración Vercel) -->
+        <section id="slide-1" class="slide-container active">
+            <div class="slide-content text-center">
+                <p class="text-xl sm:text-2xl text-indigo-400 mb-4">La Evolución de las Cadenas de Bloques</p>
+                <h1 class="text-5xl sm:text-7xl font-extrabold mb-6">
+                    <span class="highlight-text">Evolve</span>: El Futuro Modular
+                </h1>
+                <p class="text-3xl text-gray-300 font-light mb-8 max-w-4xl mx-auto">
+                    Lanza tu propia red <span class="accent-text">soberana</span> con la simplicidad de un despliegue en Vercel o Cloudflare.
+                </p>
+                <div class="mt-12">
+                    <p class="text-lg text-gray-400">Antes Rollkit, ahora Evolve: el framework que elimina la fricción técnica de las L1.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Diapositiva 2: El Problema y la Solución Simple -->
+        <section id="slide-2" class="slide-container">
+            <div class="slide-content">
+                <p class="text-lg text-indigo-400 mb-2">1 / Problema que Resuelve</p>
+                <h2 class="text-4xl sm:text-5xl font-bold mb-8">De la Fricción a la <span class="highlight-text">Soberanía Total</span></h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="bg-red-800/30 p-6 rounded-xl border border-red-700/50">
+                        <h3 class="text-2xl font-semibold mb-3 text-red-300">Modelo Tradicional</h3>
+                        <ul class="space-y-3 text-gray-300 list-disc list-inside">
+                            <li>Arrancar una <span class="font-bold">red de validadores</span> compleja.</li>
+                            <li>Gestionar un <span class="font-bold">consenso</span> robusto desde cero.</li>
+                            <li>Trade-offs: Altos costos y baja velocidad.</li>
+                            <li>Lanzamiento: Meses o años.</li>
+                        </ul>
+                    </div>
+                    <div class="bg-green-800/30 p-6 rounded-xl border border-green-700/50">
+                        <h3 class="text-2xl font-semibold mb-3 text-green-300">Solución Evolve</h3>
+                        <ul class="space-y-3 text-gray-300 list-disc list-inside">
+                            <li>Lanzar una cadena es como desplegar un <span class="font-bold">contrato inteligente</span>.</li>
+                            <li>Control total sobre la <span class="font-bold">economía del token</span> y el gas.</li>
+                            <li>Infraestructura moldeable a tu app (Juegos, DeFi, Marketplaces).</li>
+                            <li>Lanzamiento: Minutos.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Diapositiva 3: Beneficio Clave 1 - Seguridad Compartida (Celestia) -->
+        <section id="slide-3" class="slide-container">
+            <div class="slide-content">
+                <p class="text-lg text-indigo-400 mb-2">2 / Beneficio Clave</p>
+                <h2 class="text-4xl sm:text-5xl font-bold mb-8">Seguridad Compartida y <span class="highlight-text">Data Availability</span> (DA)</h2>
+                
+                <p class="text-xl text-gray-300 mb-6">Evolve aprovecha una capa DA como <span class="accent-text">Celestia</span> para garantizar que los datos de tus bloques sean públicos y verificables.</p>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="p-4 bg-gray-800/50 rounded-lg">
+                        <p class="text-2xl font-bold mb-2">Seguridad</p>
+                        <p class="text-gray-400">Uso de <span class="font-bold">Fraud Proofs</span> o <span class="font-bold">zk-Proofs</span> para detectar estados inválidos, reduciendo la confianza en el secuenciador.</p>
+                    </div>
+                    <div class="p-4 bg-gray-800/50 rounded-lg">
+                        <p class="text-2xl font-bold mb-2">Verificación Ligera</p>
+                        <p class="text-gray-400">Los <span class="font-bold">Light Clients</span> usan <span class="font-bold">DAS (Data Availability Sampling)</span> para verificar la DA sin descargar la cadena completa.</p>
+                    </div>
+                    <div class="p-4 bg-gray-800/50 rounded-lg">
+                        <p class="text-2xl font-bold mb-2">Definición DA</p>
+                        <p class="text-gray-400">Es la garantía de que los datos de un bloque realmente fueron publicados y están disponibles para que cualquiera los verifique.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Diapositiva 4: Beneficio Clave 2 - Escalabilidad y Customización -->
+        <section id="slide-4" class="slide-container">
+            <div class="slide-content">
+                <p class="text-lg text-indigo-400 mb-2">3 / Componentes Clave</p>
+                <h2 class="text-4xl sm:text-5xl font-bold mb-8">Escalabilidad y Personalización <span class="highlight-text">VM Agnostic</span></h2>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <div class="lg:col-span-2">
+                        <p class="text-xl text-gray-300 mb-6">La arquitectura modular te permite elegir y modificar los 4 componentes principales de tu cadena:</p>
+                        <ul class="space-y-4 text-gray-200 text-xl font-medium">
+                            <li>1. <span class="accent-text">DA Layer</span>: Celestia, Avail.</li>
+                            <li>2. <span class="accent-text">Execution Environment (EE)</span>: EVM, Cosmos SDK, WASM o custom.</li>
+                            <li>3. <span class="accent-text">Proof System</span>: Fraud Proofs o Validity Proofs (ZK).</li>
+                            <li>4. <span class="accent-text">Sequencer Scheme</span>: Centralizado, Base o Descentralizado.</li>
+                        </ul>
+                    </div>
+                    <div class="lg:col-span-1 flex flex-col justify-center items-start p-6 bg-gray-800 rounded-xl">
+                        <div class="text-5xl mb-3 text-cyan-400">⚡</div>
+                        <h3 class="text-2xl font-semibold mb-2">Escalabilidad Nativa</h3>
+                        <p class="text-gray-400">Al tener un <span class="font-bold">EE dedicado</span>, tus transacciones no se ejecutan en la capa DA, liberando recursos computacionales y logrando un alto <span class="font-bold">data throughput</span>.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Diapositiva 5: Flujo de Creación y Tiempo al Mercado -->
+        <section id="slide-5" class="slide-container">
+            <div class="slide-content">
+                <p class="text-lg text-indigo-400 mb-2">4 / Time-to-Market</p>
+                <h2 class="text-4xl sm:text-5xl font-bold mb-8">Lanza tu Propia Cadena <span class="highlight-text">en Minutos</span></h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-5 gap-4 items-center">
+                    <div class="md:col-span-2 text-center md:text-left">
+                        <p class="text-2xl text-gray-300 mb-4 font-light">Se acabó esperar meses. Evolve preconfigura todo (secuenciador, nodo, conexión DA).</p>
+                        <p class="text-xl font-medium text-gray-400">Misima experiencia que:</p>
+                        <p class="text-4xl font-extrabold text-white">git push</p>
+                    </div>
+                    
+                    <div class="hidden md:block md:col-span-1 text-center text-4xl text-green-500 font-bold">
+                        <div class="mb-4">➡️</div>
+                        <div class="mb-4">➡️</div>
+                    </div>
+
+                    <div class="md:col-span-2">
+                        <h3 class="text-2xl font-semibold mb-3">Guía Técnica Simple:</h3>
+                        <div class="code-block">
+                            <pre class="text-sm sm:text-base text-gray-200">
+<span class="text-cyan-400">$</span> git clone https://github.com/evstack/ev-node
+<span class="text-cyan-400">$</span> cd ev-node
+<span class="text-cyan-400">$</span> <span class="text-green-400">tilt up</span>  <span class="text-gray-500">// Levanta la red completa</span></pre>
+                        </div>
+                        <p class="text-sm mt-3 text-gray-500">Luego: Publicar bloques en el namespace de Celestia y testear con 'spammer'.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Diapositiva 6: Soberanía y Gobernanza -->
+        <section id="slide-6" class="slide-container">
+            <div class="slide-content">
+                <p class="text-lg text-indigo-400 mb-2">5 / La Ventaja Competitiva</p>
+                <h2 class="text-4xl sm:text-5xl font-bold mb-8">El Poder de la <span class="highlight-text">Soberanía Comunitaria</span></h2>
+                
+                <div class="bg-gray-800/50 p-6 rounded-xl border border-gray-700/50 mb-6">
+                    <h3 class="text-2xl font-semibold mb-3 text-white">Sovereign Rollups</h3>
+                    <p class="text-gray-300">Las cadenas creadas con Evolve nacen como <span class="font-bold">rollups soberanos</span>.</p>
+                    <ul class="mt-4 space-y-2 text-gray-400 list-disc list-inside">
+                        <li>Independencia total en el consenso y las reglas.</li>
+                        <li>Garantía de DA en Celestia, pero la decisión de *qué* constituye un bloque válido es de la comunidad.</li>
+                        <li>Permite una migración futura a su propia seguridad si es necesario.</li>
+                    </ul>
+                </div>
+
+                <p class="text-xl text-cyan-300 font-semibold mt-8">Control Comunitario:</p>
+                <p class="text-lg text-gray-300">Tu comunidad decide sobre <span class="font-bold">upgrades y forks</span> del protocolo, adaptando la infraestructura a la evolución de tu aplicación sin depender de capas de asentamiento externas.</p>
+            </div>
+        </section>
+
+        <!-- Diapositiva 7: Resumen y Aplicación Práctica -->
+        <section id="slide-7" class="slide-container">
+            <div class="slide-content">
+                <p class="text-lg text-indigo-400 mb-2">6 / Conclusión</p>
+                <h2 class="text-4xl sm:text-5xl font-bold mb-8">Evolve en Síntesis y Próximos Pasos</h2>
+
+                <div class="bg-gray-800/50 p-6 rounded-xl border border-gray-700/50 mb-8">
+                    <h3 class="text-2xl font-semibold mb-4 text-white">¿Cuándo usar Evolve?</h3>
+                    <ul class="space-y-3 text-gray-300 list-disc list-inside text-lg">
+                        <li>Tu dApp necesita <span class="font-bold">reglas propias</span>, gobernanza comunitaria o independencia.</li>
+                        <li>Buscas el <span class="font-bold">time-to-market</span> más rápido para una L2 o rollup.</li>
+                        <li>Requieres <span class="font-bold">flexibilidad VM</span> (no atarte solo a EVM).</li>
+                    </ul>
+                </div>
+                
+                <div class="text-center">
+                    <p class="text-3xl font-extrabold text-cyan-400">¡Tu idea, tu blockchain, ahora!</p>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Contenedor de salida de Gemini (Pitch) -->
+    <div id="gemini-output" role="alert">
+        <p class="text-sm font-semibold mb-1 text-indigo-400">✨ Pitch Instantáneo Generado por Gemini:</p>
+        <p id="pitch-text" class="text-lg font-medium text-white"></p>
+        <div id="pitch-loading" class="flex items-center space-x-2 hidden">
+            <div class="spinner"></div>
+            <span class="text-gray-400">Generando pitch...</span>
+        </div>
+    </div>
+
+
+    <!-- Panel de control de navegación -->
+    <div class="controls">
+        <button id="prev-btn" onclick="changeSlide(-1)" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-lg transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
+            Anterior
+        </button>
+        <button id="pitch-btn" onclick="generatePitch()" class="px-4 py-2 bg-pink-600 hover:bg-pink-700 text-white font-bold rounded-lg transition duration-200 flex items-center">
+            <span class="mr-2">✨</span> Generar Pitch del Slide
+        </button>
+        <div id="slide-counter" class="text-lg font-semibold text-gray-400">1 / 7</div>
+        <button id="next-btn" onclick="changeSlide(1)" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-lg transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center">
+            Siguiente
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" /></svg>
+        </button>
+    </div>
+
+    <script>
+        let currentSlideIndex = 0;
+        const slides = document.querySelectorAll('.slide-container');
+        const slideCounter = document.getElementById('slide-counter');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const pitchBtn = document.getElementById('pitch-btn');
+        const geminiOutput = document.getElementById('gemini-output');
+        const pitchText = document.getElementById('pitch-text');
+        const pitchLoading = document.getElementById('pitch-loading');
+        const totalSlides = slides.length;
+
+        // Inicializa la primera diapositiva
+        showSlide(currentSlideIndex);
+
+        function showSlide(index) {
+            // Desactiva todas las diapositivas
+            slides.forEach((slide, i) => {
+                slide.classList.remove('active');
+                slide.style.display = 'none'; // Oculta para ahorrar recursos
+            });
+
+            // Activa la diapositiva actual
+            if (slides[index]) {
+                slides[index].style.display = 'flex';
+                // Pequeño timeout para que la transición CSS se active
+                setTimeout(() => {
+                    slides[index].classList.add('active');
+                }, 10);
+            }
+
+            // Oculta la salida de Gemini al cambiar de slide
+            geminiOutput.style.display = 'none';
+            pitchText.textContent = '';
+
+
+            // Actualiza el contador
+            slideCounter.textContent = `${index + 1} / ${totalSlides}`;
+
+            // Control de botones
+            prevBtn.disabled = index === 0;
+            nextBtn.disabled = index === totalSlides - 1;
+
+            currentSlideIndex = index;
+        }
+
+        function changeSlide(direction) {
+            const newIndex = currentSlideIndex + direction;
+            if (newIndex >= 0 && newIndex < totalSlides) {
+                showSlide(newIndex);
+            }
+        }
+
+        // --- Función de Integración de la API de Gemini ---
+
+        async function generatePitch() {
+            // 1. Mostrar estado de carga
+            geminiOutput.style.display = 'block';
+            pitchText.textContent = '';
+            pitchLoading.classList.remove('hidden');
+            pitchBtn.disabled = true;
+
+            try {
+                // 2. Obtener contenido del slide actual
+                const currentSlide = slides[currentSlideIndex];
+                // Clonar el contenido y eliminar elementos no deseados (como el header y otros elementos de control/navegación)
+                const slideContentContainer = currentSlide.querySelector('.slide-content');
+                let contentToSummarize = slideContentContainer ? slideContentContainer.textContent : currentSlide.textContent;
+                
+                // Limpieza de texto para el prompt
+                contentToSummarize = contentToSummarize.replace(/(\r\n|\n|\r)/gm, " ").trim();
+                
+                if (!contentToSummarize) {
+                    pitchText.textContent = "Error: No se pudo extraer el contenido del slide.";
+                    return;
+                }
+
+                const systemPrompt = "Actúa como un experto en marketing blockchain y tutor técnico. Tu tarea es generar un 'pitch' de una sola frase que resuma el punto más importante de la diapositiva proporcionada. Debe ser persuasivo, conciso y en español. Céntrate en el beneficio clave.";
+                const userQuery = `Genera el pitch de una frase para el siguiente contenido de diapositiva: "${contentToSummarize}"`;
+                
+                const apiKey = "";
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+
+                const payload = {
+                    contents: [{ parts: [{ text: userQuery }] }],
+                    systemInstruction: {
+                        parts: [{ text: systemPrompt }]
+                    },
+                };
+                
+                // Lógica de reintento con retroceso exponencial
+                let response;
+                let success = false;
+                const maxRetries = 3;
+                let delay = 1000;
+
+                for (let i = 0; i < maxRetries; i++) {
+                    try {
+                        response = await fetch(apiUrl, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(payload)
+                        });
+
+                        if (response.ok) {
+                            success = true;
+                            break;
+                        }
+                    } catch (error) {
+                        console.error("Fetch attempt failed:", error);
+                    }
+                    await new Promise(resolve => setTimeout(resolve, delay));
+                    delay *= 2;
+                }
+                
+                if (!success) {
+                    throw new Error("Fallo la llamada a la API de Gemini después de varios reintentos.");
+                }
+
+                const result = await response.json();
+                const text = result.candidates?.[0]?.content?.parts?.[0]?.text || "No se pudo generar el pitch (respuesta vacía).";
+                
+                // 3. Mostrar resultado
+                pitchText.textContent = text.trim();
+
+            } catch (error) {
+                console.error("Error al generar pitch con Gemini:", error);
+                pitchText.textContent = `Error al generar el pitch: ${error.message}`;
+                // Asegúrate de que el contenedor se muestre si hubo un error para reportarlo
+                geminiOutput.style.display = 'block'; 
+            } finally {
+                // 4. Limpiar estado de carga
+                pitchLoading.classList.add('hidden');
+                pitchBtn.disabled = false;
+            }
+        }
+
+        // Control de teclado para navegación (opcional)
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                changeSlide(1);
+            } else if (e.key === 'ArrowLeft') {
+                changeSlide(-1);
+            }
+        });
+    </script>
+</body>
+</html>
